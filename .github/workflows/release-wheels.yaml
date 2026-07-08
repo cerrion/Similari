@@ -1,0 +1,45 @@
+name: Release wheels
+
+# Builds abi3 (cp311-abi3) wheels — one per platform, valid on CPython 3.11+ incl. 3.14 —
+# and attaches them to the GitHub Release. Consumed by anomaly-projects via tool.uv.sources URLs.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: build ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: linux-x86_64,  runner: ubuntu-latest, target: x86_64,  manylinux: "2_28" }
+          - { name: linux-aarch64, runner: ubuntu-latest, target: aarch64, manylinux: "2_28" }
+          - { name: macos-arm64,   runner: macos-14,      target: aarch64, manylinux: "auto" }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build abi3 wheel
+        uses: PyO3/maturin-action@v1
+        env:
+          PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
+        with:
+          command: build
+          target: ${{ matrix.target }}
+          manylinux: ${{ matrix.manylinux }}
+          args: --release --out dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.name }}
+          path: dist/*.whl
+
+      - name: Attach wheels to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.whl
