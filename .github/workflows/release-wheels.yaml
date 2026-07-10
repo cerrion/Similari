@@ -1,7 +1,8 @@
 name: Release wheels
 
 # Builds abi3 (cp311-abi3) wheels — one per platform, valid on CPython 3.11+ incl. 3.14 —
-# and attaches them to the GitHub Release. Consumed by anomaly-projects via tool.uv.sources URLs.
+# attaches them to the GitHub Release, then publishes them to PyPI (Trusted Publishing) as
+# `similari-tracker-rs-py313`. Consumed by anomaly-projects as a normal versioned dependency.
 
 on:
   release:
@@ -45,3 +46,23 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.whl
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # OIDC token for PyPI Trusted Publishing (no stored secret)
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          path: dist
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true

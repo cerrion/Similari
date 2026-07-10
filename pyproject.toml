@@ -3,7 +3,7 @@ requires = ["maturin>=1.8,<1.9"]
 build-backend = "maturin"
 
 [project]
-name = "similari-trackers-rs"
+name = "similari-tracker-rs-py313"
 version = "0.26.12"
 requires-python = ">=3.11"
 classifiers = [
