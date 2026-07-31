@@ -2,6 +2,10 @@
 ///
 pub mod sort;
 
+/// Lightweight SORT implementation with a six-dimensional constant-velocity
+/// state and raw-IoU Hungarian association.
+pub mod simple_sort;
+
 /// Trait that implements epoch db management
 pub mod epoch_db;
 
