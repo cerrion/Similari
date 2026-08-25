@@ -103,7 +103,10 @@ impl<T> PredictionBatchRequest<T> {
     }
 
     pub fn new() -> (Self, PredictionBatchResult) {
-        let (sender, receiver) = crossbeam::channel::bounded(1);
+        // A batch can produce one result per scene before the caller starts
+        // draining it. An unbounded channel avoids blocking producers after
+        // the first scene while still retaining only this request's results.
+        let (sender, receiver) = crossbeam::channel::unbounded();
         let batch_size = Arc::new(Mutex::new(0));
         (
             Self {

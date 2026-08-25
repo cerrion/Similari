@@ -83,6 +83,7 @@ pub const EPS: f32 = 0.00001;
 mod python {
     use crate::trackers::batch::python::PyPredictionBatchResult;
     use crate::trackers::simple_sort::python::PySimpleSort;
+    use crate::trackers::simple_sort_batch::python::PyBatchSimpleSort;
     use crate::trackers::sort::batch_api::python::{PyBatchSort, PySortPredictionBatchRequest};
     use crate::trackers::sort::python::{PyPositionalMetricType, PySortTrack, PyWastedSortTrack};
     use crate::trackers::sort::simple_api::python::PySort;
@@ -126,6 +127,7 @@ mod python {
         m.add_class::<PySortTrack>()?;
         m.add_class::<PyWastedSortTrack>()?;
         m.add_class::<PySimpleSort>()?;
+        m.add_class::<PyBatchSimpleSort>()?;
 
         m.add_class::<PyUniversal2DBoxKalmanFilterState>()?;
         m.add_class::<PyUniversal2DBoxKalmanFilter>()?;
