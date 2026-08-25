@@ -7,6 +7,7 @@ pub use track::notify::NoopNotifier;
 pub use track::store::builder::TrackStoreBuilder;
 
 pub use crate::trackers::sort::PositionalMetricType;
+pub use trackers::simple_sort_batch::BatchSimpleSort;
 pub use trackers::sort::batch_api::BatchSort;
 pub use trackers::sort::simple_api::Sort;
 pub use trackers::sort::SortTrack;

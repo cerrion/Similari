@@ -6,6 +6,9 @@ pub mod sort;
 /// state and raw-IoU Hungarian association.
 pub mod simple_sort;
 
+/// BatchSort-compatible multi-scene wrapper for SimpleSort.
+pub mod simple_sort_batch;
+
 /// Trait that implements epoch db management
 pub mod epoch_db;
 
